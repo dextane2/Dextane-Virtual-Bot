@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: dextane-virtual-bot
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python install_playwright.py
+    startCommand: gunicorn app:app
