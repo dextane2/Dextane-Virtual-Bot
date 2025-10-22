@@ -1,4 +1,0 @@
-flask
-playwright
-sqlite3-binary
-gunicorn
