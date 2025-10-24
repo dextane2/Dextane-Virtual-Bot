@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dextane Virtual Bot</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0a1931, #1b2a49, #243b55);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    header h1 {
+      font-size: 20px;
+      color: #00bfff;
+      font-weight: 600;
+    }
+
+    .menu {
+      font-size: 24px;
+      cursor: pointer;
+      color: #00bfff;
+    }
+
+    .menu:hover {
+      color: #66d9ff;
+    }
+
+    .section {
+      width: 90%;
+      max-width: 800px;
+      margin-top: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00bfff;
+      margin-bottom: 15px;
+    }
+
+    .card-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .card {
+      flex: 1 1 calc(33.33% - 15px);
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.6);
+    }
+
+    .card strong {
+      color: #00bfff;
+      font-size: 16px;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .countdown {
+      text-align: center;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #66d9ff;
+      font-size: 18px;
+    }
+
+    @media (max-width: 700px) {
+      .card {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dextane Virtual Bot</h1>
+    <div class="menu">&#9776;</div>
+  </header>
+
+  <div class="section">
+    <h2>⚽ Over 1.5 Predictions</h2>
+    <div class="card-container">
+      {% for match in over_15 %}
+      <div class="card">
+        <p><strong>{{ match.home }}</strong> vs <strong>{{ match.away }}</strong></p>
+        <p>{{ match.prediction }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>⚽ Under 2.5 Predictions</h2>
+    <div class="card-container">
+      {% for match in under_25 %}
+      <div class="card">
+        <p><strong>{{ match.home }}</strong> vs <strong>{{ match.away }}</strong></p>
+        <p>{{ match.prediction }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="countdown">
+    Next round in: <span id="timer">02:00</span>
+  </div>
+
+  <footer>© 2025 Dextane Virtual Bot | Lagos, Nigeria Time</footer>
+
+  <script>
+    // 2-minute countdown
+    let seconds = 120;
+    const timerElement = document.getElementById("timer");
+
+    function updateTimer() {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      timerElement.textContent =
+        `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+      if (seconds > 0) seconds--;
+    }
+
+    setInterval(updateTimer, 1000);
+  </script>
+</body>
+</html>
