@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dextane Virtual Bot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>Dextane Virtual <span>Bot</span></h1>
+    </div>
+
+    <!-- three-line menu aligned to the right under header -->
+    <div class="menu-right">
+      <div id="menu-toggle" class="hamburger" aria-label="menu" title="Menu">
+        <span></span><span></span><span></span>
+      </div>
+
+      <div id="menu-dropdown" class="menu-dropdown">
+        <button id="scrape-btn" class="menu-item">🧠 Scrape Now</button>
+        <button class="menu-item" onclick="location.reload()">🔃 Refresh</button>
+        <button class="menu-item" onclick="alert('Dextane Virtual Bot — Demo')">ℹ️ About</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="top-info">
+    <div class="time-row">
+      <div class="lagos">🇳🇬 Lagos Time: <span id="lagos-time">{{ now }}</span></div>
+      <div class="next-round">Next round starts in: <span id="countdown-display">02:00</span></div>
+    </div>
+  </section>
+
+  <main>
+    <div class="swipe-wrapper" id="swipe-wrapper">
+      <article class="card card-visible" id="card-over">
+        <h2>Over 1.5 Predictions</h2>
+        <ul id="over-list" class="fixtures">
+          {% for item in over %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+
+      <article class="card" id="card-under">
+        <h2>Under 2.5 Predictions</h2>
+        <ul id="under-list" class="fixtures">
+          {% for item in under %}
+            <li>{{ item }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+    </div>
+
+    <p class="swipe-hint">Swipe left / right to switch</p>
+  </main>
+
+  <footer>
+    <div class="footer-text">Last updated: <span id="last-updated">{{ now }}</span> (Lagos)</div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    // initial countdown value provided by backend
+    let initialCountdown = {{ countdown }};
+    window.__INITIAL_COUNTDOWN__ = initialCountdown;
+  </script>
+</body>
+</html>
