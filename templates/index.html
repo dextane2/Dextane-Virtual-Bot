@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dextane Virtual Bot</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1>Dextane Virtual Bot</h1>
+    <p>SportyBet Scheduled VFL (England)</p>
+    <div class="menu-container">
+      <button class="menu-btn">&#9776;</button>
+      <div class="dropdown">
+        <a href="#" id="scrapeBtn">Scrape Now</a>
+        <a href="#" id="refreshBtn">Refresh</a>
+        <a href="#">About</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="carousel-container">
+    <button class="nav-btn left" onclick="prevCard()">&#10094;</button>
+
+    <div class="carousel" id="carousel">
+      <div class="card fade">
+        <h2>Over 1.5 Predictions</h2>
+        <table>
+          <tr><th>Home</th><th>Away</th></tr>
+          {% for match in fixtures['over_15'] %}
+          <tr><td>{{ match[0] }}</td><td>{{ match[1] }}</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <div class="card fade">
+        <h2>Under 2.5 Predictions</h2>
+        <table>
+          <tr><th>Home</th><th>Away</th></tr>
+          {% for match in fixtures['under_25'] %}
+          <tr><td>{{ match[0] }}</td><td>{{ match[1] }}</td></tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+    <button class="nav-btn right" onclick="nextCard()">&#10095;</button>
+  </section>
+
+  <footer>
+    <p>Last updated: {{ now }} (Lagos Time)</p>
+    <p id="countdown">Next update in: 2:00</p>
+  </footer>
+
+  <script>
+    // Dropdown toggle
+    document.querySelector('.menu-btn').addEventListener('click', () => {
+      document.querySelector('.dropdown').classList.toggle('show');
+    });
+
+    // Carousel logic
+    let currentIndex = 0;
+    const cards = document.querySelectorAll('.card');
+    function showCard(index) {
+      cards.forEach((card, i) => {
+        card.style.transform = `translateX(${(i - index) * 100}%)`;
+        card.style.opacity = i === index ? '1' : '0';
+      });
+    }
+    function nextCard() {
+      currentIndex = (currentIndex + 1) % cards.length;
+      showCard(currentIndex);
+    }
+    function prevCard() {
+      currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+      showCard(currentIndex);
+    }
+    showCard(currentIndex);
+
+    // Swipe support (mobile)
+    let startX = 0;
+    document.querySelector('.carousel').addEventListener('touchstart', e => startX = e.touches[0].clientX);
+    document.querySelector('.carousel').addEventListener('touchend', e => {
+      const endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) nextCard();
+      else if (endX - startX > 50) prevCard();
+    });
+
+    // Countdown timer (2 min)
+    let countdown = 120;
+    const timerDisplay = document.getElementById('countdown');
+    setInterval(() => {
+      countdown--;
+      const m = Math.floor(countdown / 60);
+      const s = countdown % 60;
+      timerDisplay.textContent = `Next update in: ${m}:${s.toString().padStart(2, '0')}`;
+      if (countdown <= 0) countdown = 120;
+    }, 1000);
+  </script>
+</body>
+</html>
